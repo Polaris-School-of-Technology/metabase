@@ -593,7 +593,7 @@
   ([query index]
    (aggregation-at-index query index 0))
 
-  ([query         :- mbql.s/Query
+  ([query         :- ::mbql.s/Query
     index         :- ::lib.schema.common/int-greater-than-or-equal-to-zero
     nesting-level :- ::lib.schema.common/int-greater-than-or-equal-to-zero]
    (if (zero? nesting-level)
