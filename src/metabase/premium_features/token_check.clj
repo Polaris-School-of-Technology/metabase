@@ -162,19 +162,27 @@
                          [token base-url site-uuid])}
    (fn [token base-url site-uuid]
      (log/infof "Checking with the MetaStore to see whether token '%s' is valid..." (u.str/mask token))
-     (let [{:keys [body status] :as resp} (some-> (token-status-url token base-url)
-                                                  (http/get {:query-params     (merge (stats-for-token-request)
-                                                                                      {:site-uuid  site-uuid
-                                                                                       :mb-version (:tag config/mb-version-info)})
-                                                             :throw-exceptions false}))]
-       (cond
-         (http/success? resp) (some-> body json/decode+kw)
-
-         (<= 400 status 499) (some-> body json/decode+kw)
+     (let [{:keys [body
+                   status
+                   headers] :as resp} (some-> (token-status-url token base-url)
+                                              (http/get {:query-params     (merge (stats-for-token-request)
+                                                                                  {:site-uuid  site-uuid
+                                                                                   :mb-version (:tag config/mb-version-info)})
+                                                         :throw-exceptions false}))
+           json? (some-> (get headers "content-type")
+                         (str/starts-with? "application/json"))]
+       (if (or (http/success? resp)
+               (http/client-error? resp))
+         (when body
+           (if json?
+             (json/decode+kw body)
+             {:valid false
+              :status (str status)
+              :error-details body}))
 
          ;; exceptions are not cached.
-         :else (throw (ex-info "An unknown error occurred when validating token." {:status status
-                                                                                   :body body})))))
+         (throw (ex-info "An unknown error occurred when validating token." {:status status
+                                                                             :body body})))))
 
    :ttl/threshold token-status-cache-ttl))
 
