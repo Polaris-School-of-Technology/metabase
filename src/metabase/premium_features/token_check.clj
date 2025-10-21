@@ -162,20 +162,17 @@
                          [token base-url site-uuid])}
    (fn [token base-url site-uuid]
      (log/infof "Checking with the MetaStore to see whether token '%s' is valid..." (u.str/mask token))
-     (let [{:keys [body
-                   status
-                   headers] :as resp} (some-> (token-status-url token base-url)
-                                              (http/get {:query-params     (merge (stats-for-token-request)
-                                                                                  {:site-uuid  site-uuid
-                                                                                   :mb-version (:tag config/mb-version-info)})
-                                                         :throw-exceptions false}))
-           json? (some-> (get headers "content-type")
-                         (str/starts-with? "application/json"))]
+     (let [{:keys [body status] :as resp} (some-> (token-status-url token base-url)
+                                                  (http/get {:query-params     (merge (stats-for-token-request)
+                                                                                      {:site-uuid  site-uuid
+                                                                                       :mb-version (:tag config/mb-version-info)})
+                                                             :throw-exceptions false}))]
        (if (or (http/success? resp)
                (http/client-error? resp))
-         (when body
-           (if json?
-             (json/decode+kw body)
+         (try
+           (json/decode+kw body)
+           (catch Exception e
+             (log/errorf "Token check responded with invalid JSON: %s" {:body body :error (ex-message e)})
              {:valid false
               :status (str status)
               :error-details body}))
