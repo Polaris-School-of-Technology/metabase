@@ -290,10 +290,7 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
     light: baseColors.orion[80],
     dark: baseColors.orion[20],
   },
-  "background-secondary": {
-    light: baseColors.orion[5],
-    dark: baseColors.orion[110],
-  },
+
   "background-selected": {
     light: baseColors.brand[50],
     dark: baseColors.brand[40],
@@ -302,27 +299,31 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
     light: baseColors.white,
     dark: baseColors.orion[100],
   },
-  "background-primary-inverse": {
-    light: baseColors.orion[80],
-    dark: baseColors.orion[20],
-  },
-  overlay: {
-    //should be called overlay? this label is not semantic
-    light: baseColors.orionAlpha[60],
-    dark: baseColors.orionAlpha[70],
+  "background-secondary": {
+    light: baseColors.orion[5],
+    dark: baseColors.orion[110],
   },
   "background-tertiary": {
     light: baseColors.orion[10],
     dark: baseColors.orion[80],
   },
-  "background-tertiary-inverse": {
-    light: baseColors.orion[40],
-    dark: baseColors.orion[70],
+  "background-primary-inverse": {
+    light: baseColors.orion[80],
+    dark: baseColors.orion[20],
   },
   "background-secondary-inverse": {
     light: baseColors.orion[70],
     dark: baseColors.orion[30],
   }, // Only used one place
+  "background-tertiary-inverse": {
+    light: baseColors.orion[40],
+    dark: baseColors.orion[70],
+  },
+  overlay: {
+    light: baseColors.orionAlpha[60],
+    dark: baseColors.orionAlpha[70],
+  },
+
   "background-error": {
     light: baseColors.lobster[10],
     dark: baseColors.lobster[90],
@@ -577,19 +578,6 @@ const getColorConfig = (settings: ColorSettings = {}) => ({
   accent7: {
     light: "#7172AD",
     dark: "#7172AD",
-  },
-  "bg-primary": {
-    light: baseColors.white,
-    dark: baseColors.orion[110],
-  },
-  "bg-secondary": {
-    light: baseColors.orion[5],
-    dark: baseColors.orion[100],
-  },
-  "bg-tertiary": {
-    //I don't think this is used?
-    light: baseColors.orion[10],
-    dark: baseColors.orion[90],
   },
   "bg-hover": {
     //I don't think this is used?

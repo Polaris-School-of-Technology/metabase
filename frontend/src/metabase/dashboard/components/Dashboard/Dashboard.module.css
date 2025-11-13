@@ -1,6 +1,6 @@
 .DashboardBody {
   flex: 1 0 auto;
-  background-color: var(--mb-color-bg-secondary);
+  background-color: var(--mb-color-background-secondary);
 
   &.isEditingOrSharing {
     flex-basis: 0;

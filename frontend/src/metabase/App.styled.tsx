@@ -19,7 +19,7 @@ export const AppContentContainer = styled.div<{
   background-color: ${(props) =>
     props.isAdminApp
       ? "var(--mb-color-background-primary)"
-      : "var(--mb-color-bg-primary)"};
+      : "var(--mb-color-background-primary)"};
 
   @media print {
     height: 100%;
