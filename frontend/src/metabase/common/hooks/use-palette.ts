@@ -19,7 +19,6 @@ export function usePalette(): ColorPalette {
       "text-secondary": theme.fn.themeColor("text-secondary"),
       "text-disabled": theme.fn.themeColor("text-disabled"),
       "text-primary-inverse": theme.fn.themeColor("text-primary-inverse"),
-      "text-primary": theme.fn.themeColor("text-primary"),
       "background-primary": theme.fn.themeColor("background-primary"),
     };
   }, [theme]);

@@ -64,9 +64,6 @@ export interface MetabaseColors {
   /** Muted background color used for disabled elements, such as disabled buttons and inputs. */
   "background-disabled"?: string;
 
-  /** Light background color used for some controls like a radiogroup. */
-  "background-secondary"?: string;
-
   /** Color used for borders */
   border?: string;
 

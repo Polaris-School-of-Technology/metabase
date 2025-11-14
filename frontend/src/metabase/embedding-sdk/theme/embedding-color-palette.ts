@@ -24,7 +24,7 @@ export type SemanticColorKey =
   | "text-selected"
   | "text-brand"
   | "text-primary-inverse"
-  | "background"
+  | "background-primary"
   | "background-hover"
   | "background-selected"
   | "background-disabled"
@@ -53,7 +53,7 @@ export const SDK_TO_MAIN_APP_COLORS_MAPPING: Record<
   "text-primary": ["text-primary", "text-primary"],
   "text-secondary": ["text-secondary", "text-secondary"],
   "text-disabled": ["text-disabled", "text-disabled"],
-  background: ["background-primary", "background-primary", "background"],
+  background: ["background-primary", "background-primary"],
   "background-hover": ["background-secondary", "background-hover"],
   "background-secondary": ["background-tertiary", "background-secondary"],
   "background-disabled": ["background-disabled"],
