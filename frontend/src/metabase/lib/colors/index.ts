@@ -1,5 +1,4 @@
 export * from "./palette";
 export * from "./colors";
 export * from "./types";
-export * from "./theme-generator";
-export * from "./default-themes";
+export * from "./derived-colors";

@@ -1,10 +1,9 @@
-import type { colorConfig } from "./colors";
-
 /**
- * Color palette that can be customized.
- * Used for both the main app and embedding.
+ * Customizable color palettes for Metabase.
  */
 export interface MetabaseColorsV2 {
+  // --- Main colors ---
+
   /** Primary brand color */
   brand: string;
 
@@ -13,6 +12,8 @@ export interface MetabaseColorsV2 {
 
   /** Primary text color  */
   "text-primary": string;
+
+  // --- Supporting colors ---
 
   /** Secondary text color */
   "text-secondary": string;
@@ -46,14 +47,93 @@ export interface MetabaseColorsV2 {
 }
 
 /**
+ * Semantic colors that are derived from the main theme colors.
+ * These keys are not customizable via the theming system.
+ */
+export const COLOR_PALETTE_DERIVED_KEYS = [
+  "accent-gray-dark",
+  "accent-gray-light",
+  "accent-gray",
+  "admin-navbar",
+  "admin-navbar-secondary",
+  "admin-navbar-inverse",
+  "background-brand",
+  "background-disabled",
+  "background-disabled-inverse",
+  "background-error-secondary",
+  "background-hover",
+  "background-hover-light",
+  "background-selected",
+  "background-tertiary",
+  "background-primary-inverse",
+  "background-secondary-inverse",
+  "background-tertiary-inverse",
+  "overlay",
+  "background-error",
+  "brand-alpha-04",
+  "brand-alpha-88",
+  "brand-dark",
+  "brand-darker",
+  "brand-light",
+  "brand-lighter",
+  "danger",
+  "error",
+  "focus",
+  "icon-primary-disabled",
+  "icon-primary",
+  "icon-secondary-disabled",
+  "icon-secondary",
+  "metabase-brand",
+  "saturated-blue",
+  "saturated-green",
+  "saturated-purple",
+  "saturated-red",
+  "saturated-yellow",
+  "success-secondary",
+  "success",
+  "switch-off",
+  "syntax-parameters-active",
+  "syntax-parameters",
+  "text-brand",
+  "text-disabled",
+  "text-disabled-inverse",
+  "text-hover",
+  "text-secondary-opaque",
+  "text-secondary-inverse",
+  "text-selected",
+  "tooltip-background-focused",
+  "tooltip-background",
+  "tooltip-text-secondary",
+  "tooltip-text",
+  "warning",
+  "background-warning",
+  "info",
+  "background-info",
+  "white",
+  "accent0",
+  "accent1",
+  "accent2",
+  "accent3",
+  "accent4",
+  "accent5",
+  "accent6",
+  "accent7",
+  "border-strong",
+  "border-subtle",
+] as const;
+
+export type ColorPaletteDerivedKey =
+  (typeof COLOR_PALETTE_DERIVED_KEYS)[number];
+
+/**
  * ColorPalette extends MetabaseColorsV2 with all remaining semantic color keys.
  * This type represents the complete internal color system.
  * All fields are partial to maintain backward compatibility.
  */
 export type ColorPalette = Partial<MetabaseColorsV2> &
-  Partial<Record<keyof typeof colorConfig, string>>;
+  Partial<Record<ColorPaletteDerivedKey, string>>;
 
-export type ColorName = keyof typeof colorConfig;
+export type ColorName = keyof MetabaseColorsV2 | ColorPaletteDerivedKey;
 
 export interface AccentColorOptions {
   main?: boolean;
@@ -64,11 +144,12 @@ export interface AccentColorOptions {
 }
 
 /**
- * MetabaseThemeV2 represents the theme object for Metabase v2 theming system.
- * This interface is used for both the main app and embedding scenarios.
+ * Theme configuration for Metabase.
+ *
+ * Version 2 of the theme object supports both embedding and internal use.
  */
 export interface MetabaseThemeV2 {
-  /** Theme version identifier */
+  /** Theme version identifier. Should be 2. */
   version: 2;
 
   /** Color palette - all fields are optional */

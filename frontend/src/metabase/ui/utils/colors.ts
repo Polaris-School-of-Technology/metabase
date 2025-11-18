@@ -1,12 +1,30 @@
 import type { MantineTheme } from "@mantine/core";
 
-import { colorConfig } from "metabase/lib/colors";
-import { generateColorPalette } from "metabase/lib/colors/theme-generator";
+import {
+  DEFAULT_CHART_COLORS,
+  deriveColorPalette,
+} from "metabase/lib/colors/derived-colors";
 import type { ColorName, MetabaseThemeV2 } from "metabase/lib/colors/types";
+import { COLOR_PALETTE_DERIVED_KEYS } from "metabase/lib/colors/types";
 
 type ColorShades = MantineTheme["colors"]["dark"];
 
-const allColorNames = Object.keys(colorConfig);
+const allColorNames: ColorName[] = [
+  "brand",
+  "background-primary",
+  "text-primary",
+  "text-secondary",
+  "text-tertiary",
+  "text-primary-inverse",
+  "background-secondary",
+  "shadow",
+  "border",
+  "filter",
+  "summarize",
+  "positive",
+  "negative",
+  ...COLOR_PALETTE_DERIVED_KEYS,
+] satisfies ColorName[];
 
 const ORIGINAL_COLORS = [
   "dark",
@@ -44,24 +62,18 @@ export function getColorShades(colorName: string): ColorShades {
 export function getThemeColors(
   theme: MetabaseThemeV2 | undefined,
 ): Record<string, ColorShades> {
-  if (!theme) {
-    // Return empty object if no theme provided
-    return Object.fromEntries(
-      ORIGINAL_COLORS.map((name) => [name, getColorShades("transparent")]),
-    );
-  }
+  // Derive full color palette from source theme color
+  const themeColorEntries = Object.entries(
+    deriveColorPalette(theme?.colors ?? {}),
+  ).map(([name, color]) => [name, getColorShades(color)]);
 
-  const generatedColors = generateColorPalette(theme.colors);
-
-  const themeColorEntries = Object.entries(generatedColors).map(
-    ([name, color]) => [name, getColorShades(color)],
-  );
-
-  // Add chart colors if provided
+  // Populate chart colors as accent0 to accent7
   const chartColorEntries =
-    theme.chartColors?.map((color, index) => [
+    Array.from({ length: 8 }).map((_, index) => [
       `accent${index}`,
-      getColorShades(color),
+      getColorShades(
+        theme?.chartColors?.[index] ?? DEFAULT_CHART_COLORS[index],
+      ),
     ]) ?? [];
 
   return {
@@ -86,5 +98,5 @@ export function color(colorName: ColorName | string): string {
 }
 
 export const isColorName = (name?: string | null): name is ColorName => {
-  return !!name && allColorNames.includes(name);
+  return !!name && allColorNames.includes(name as ColorName);
 };

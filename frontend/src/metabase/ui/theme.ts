@@ -2,10 +2,6 @@ import type { MantineThemeOverride } from "@mantine/core";
 import { rem } from "@mantine/core";
 
 import { DEFAULT_METABASE_COMPONENT_THEME } from "metabase/embedding-sdk/theme";
-import {
-  MetabaseDarkTheme,
-  MetabaseLightTheme,
-} from "metabase/lib/colors/default-themes";
 import type { MetabaseThemeV2 } from "metabase/lib/colors/types";
 
 import Styles from "./Theme.module.css";
@@ -73,8 +69,8 @@ export const breakpoints = {
 export type BreakpointName = keyof typeof breakpoints;
 
 export const getThemeOverrides = ({
+  theme,
   colorScheme = "light",
-  theme = colorScheme === "dark" ? MetabaseDarkTheme : MetabaseLightTheme,
 }: {
   theme?: MetabaseThemeV2;
   colorScheme?: "light" | "dark";

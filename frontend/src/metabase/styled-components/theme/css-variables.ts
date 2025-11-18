@@ -9,14 +9,17 @@ import {
   SDK_TO_MAIN_APP_TOOLTIP_COLORS_MAPPING,
   SDK_UNCHANGEABLE_COLORS,
 } from "metabase/embedding-sdk/theme/embedding-color-palette";
-import { colorConfig } from "metabase/lib/colors";
+import { getDarkTheme, getLightTheme } from "metabase/lib/colors";
 import type { ColorName } from "metabase/lib/colors/types";
 import type { MantineTheme } from "metabase/ui";
 
-const createColorVars = (colorScheme: "light" | "dark"): string =>
-  Object.entries(colorConfig)
-    .map(([name, value]) => `--mb-color-${name}: ${value[colorScheme]};`)
+const createColorVars = (colorScheme: "light" | "dark"): string => {
+  const themeColors =
+    colorScheme === "light" ? getLightTheme() : getDarkTheme();
+  return Object.entries(themeColors)
+    .map(([name, value]) => `--mb-color-${name}: ${value};`)
     .join("\n");
+};
 
 /**
  * Defines the CSS variables used across Metabase.

@@ -2,11 +2,11 @@ import type { MantineTheme, MantineThemeOverride } from "@mantine/core";
 import { merge } from "icepick";
 import { useEffect, useMemo } from "react";
 
-import { mutateColors } from "metabase/lib/colors/colors";
 import {
   DEFAULT_CHART_COLORS,
-  generateColorPalette,
-} from "metabase/lib/colors/theme-generator";
+  deriveColorPalette,
+  mutateColors,
+} from "metabase/lib/colors";
 import type { ColorPalette, MetabaseThemeV2 } from "metabase/lib/colors/types";
 
 import { getThemeOverrides } from "../../../theme";
@@ -44,7 +44,7 @@ export function useDerivedMantineTheme(
       return null;
     }
 
-    const palette: ColorPalette = { ...generateColorPalette(theme.colors) };
+    const palette: ColorPalette = { ...deriveColorPalette(theme.colors) };
 
     // Populate accent0 - accent7 with chart colors.
     (theme.chartColors ?? DEFAULT_CHART_COLORS).forEach((color, index) => {
