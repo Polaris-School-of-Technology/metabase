@@ -20,7 +20,7 @@ export interface MetabaseColorsV2 {
   /** Tertiary text color */
   "text-tertiary": string;
 
-  /** Primary text color */
+  /** Primary text color for inverse backgrounds */
   "text-primary-inverse": string;
 
   /** Secondary background color */
@@ -46,10 +46,17 @@ export interface MetabaseColorsV2 {
 }
 
 /**
+ * Input colors for MetabaseThemeV2.
+ * All fields are optional to allow partial theme customization.
+ */
+export type MetabaseThemeColors = Partial<MetabaseColorsV2>;
+
+/**
  * ColorPalette extends MetabaseColorsV2 with all remaining semantic color keys.
  * This type represents the complete internal color system.
+ * All fields are partial to maintain backward compatibility.
  */
-export type ColorPalette = MetabaseColorsV2 &
+export type ColorPalette = Partial<MetabaseColorsV2> &
   Partial<Record<keyof typeof colorConfig, string>>;
 
 export type ColorName = keyof typeof colorConfig;
@@ -70,8 +77,8 @@ export interface MetabaseThemeV2 {
   /** Theme version identifier */
   version: 2;
 
-  /** Color palette */
-  colors?: MetabaseColorsV2;
+  /** Color palette - all fields are optional */
+  colors?: MetabaseThemeColors;
 
   /** 8 chart colors */
   chartColors?: string[];

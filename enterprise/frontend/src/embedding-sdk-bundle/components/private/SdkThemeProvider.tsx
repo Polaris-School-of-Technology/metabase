@@ -50,7 +50,7 @@ export const SdkThemeProvider = ({ theme, children }: Props) => {
             withGlobalClasses: withGlobalClasses ?? isInstanceToRender,
           }}
         >
-          <ThemeProvider theme={themeOverride}>
+          <ThemeProvider themeOverride={themeOverride}>
             {isInstanceToRender && <GlobalSdkCssVariables />}
 
             {children}

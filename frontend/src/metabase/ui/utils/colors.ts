@@ -1,7 +1,9 @@
 import type { MantineTheme } from "@mantine/core";
 
 import { colorConfig } from "metabase/lib/colors";
-import type { ColorName } from "metabase/lib/colors/types";
+import { generateColorPalette } from "metabase/lib/colors/theme-generator";
+import type { ColorName, MetabaseThemeV2 } from "metabase/lib/colors/types";
+
 type ColorShades = MantineTheme["colors"]["dark"];
 
 const allColorNames = Object.keys(colorConfig);
@@ -40,18 +42,34 @@ export function getColorShades(colorName: string): ColorShades {
 }
 
 export function getThemeColors(
-  colorScheme: "light" | "dark",
+  theme: MetabaseThemeV2 | undefined,
 ): Record<string, ColorShades> {
+  if (!theme) {
+    // Return empty object if no theme provided
+    return Object.fromEntries(
+      ORIGINAL_COLORS.map((name) => [name, getColorShades("transparent")]),
+    );
+  }
+
+  const generatedColors = generateColorPalette(theme.colors);
+
+  const themeColorEntries = Object.entries(generatedColors).map(
+    ([name, color]) => [name, getColorShades(color)],
+  );
+
+  // Add chart colors if provided
+  const chartColorEntries =
+    theme.chartColors?.map((color, index) => [
+      `accent${index}`,
+      getColorShades(color),
+    ]) ?? [];
+
   return {
     ...Object.fromEntries(
       ORIGINAL_COLORS.map((name) => [name, getColorShades("transparent")]),
     ),
-    ...Object.fromEntries(
-      Object.entries(colorConfig).map(([name, colors]) => [
-        name,
-        getColorShades(colors[colorScheme] || colors.light),
-      ]),
-    ),
+    ...Object.fromEntries(themeColorEntries),
+    ...Object.fromEntries(chartColorEntries),
   };
 }
 
