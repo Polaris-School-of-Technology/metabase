@@ -16,6 +16,7 @@ import {
 } from "metabase/embedding/config";
 import { isEmbeddingSdk } from "metabase/embedding-sdk/config";
 import { parseHashOptions } from "metabase/lib/browser";
+import { mutateColors } from "metabase/lib/colors";
 import type { MetabaseThemeV2 } from "metabase/lib/colors/types";
 import type { DisplayTheme } from "metabase/public/lib/types";
 
@@ -44,6 +45,7 @@ interface ThemeProviderProps {
 
 const ThemeProviderInner = (props: ThemeProviderProps) => {
   const { resolvedColorScheme } = useColorScheme();
+  const [themeCacheBuster, setThemeCacheBuster] = useState(1);
 
   // Derive Mantine theme overrides from MetabaseThemeV2 or legacy themeOverride
   const theme = useDerivedMantineTheme({
@@ -55,6 +57,13 @@ const ThemeProviderInner = (props: ThemeProviderProps) => {
   const mantineTheme = useMemo(() => {
     return {
       ...theme,
+      other: {
+        ...theme.other,
+        updateColorSettings: (newValue) => {
+          mutateColors(newValue);
+          setThemeCacheBuster(themeCacheBuster + 1);
+        },
+      },
       fn: {
         themeColor: (
           color: string,
@@ -90,7 +99,7 @@ const ThemeProviderInner = (props: ThemeProviderProps) => {
         },
       },
     } as MantineTheme;
-  }, [theme]);
+  }, [theme, themeCacheBuster]);
 
   const { withCssVariables, withGlobalClasses } =
     useContext(ThemeProviderContext);

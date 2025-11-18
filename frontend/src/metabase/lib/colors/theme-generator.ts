@@ -1,26 +1,29 @@
 /* eslint-disable no-color-literals */
 
-import type { MetabaseColorsV2, MetabaseThemeColors } from "./types";
+import { MetabaseLightTheme } from "./default-themes";
+import type { ColorPalette, MetabaseColorsV2 } from "./types";
 
 /**
- * Generates a complete MetabaseColorsV2 palette from main colors.
- * This function takes the three main colors (brand, background-primary, text-primary)
+ * Generates a complete palette from three main colors.
+ * It takes the three main colors (brand, background-primary, text-primary)
  * and generates all supporting colors based on them.
  *
- * @param mainColors - Object containing at minimum brand, background-primary, and text-primary
- * @returns Complete MetabaseColorsV2 palette with all color keys populated
+ * @param mainColors - objects containing the customizable colors
+ * @returns Complete color palette with all color keys populated
  */
 export function generateColorPalette(
-  mainColors: MetabaseThemeColors = {},
-): MetabaseColorsV2 {
+  mainColors: Partial<MetabaseColorsV2> = {},
+): ColorPalette {
   const {
-    brand = "#509EE3", // Default Metabase blue
-    "background-primary": backgroundPrimary = "#ffffff",
-    "text-primary": textPrimary = "rgba(45, 51, 63, 0.8)",
+    brand = MetabaseLightTheme.colors.brand,
+    "background-primary": backgroundPrimary = MetabaseLightTheme.colors[
+      "background-primary"
+    ],
+    "text-primary": textPrimary = MetabaseLightTheme.colors["text-primary"],
   } = mainColors;
 
-  // For now, use placeholder logic for color generation
-  // TODO: Implement proper color manipulation logic using color-mix or a color library
+  // Placeholder for color generation
+  // TODO(EMB-984, EMB-1013, EMB-1016): derive colors via lightness stops and color harmonies
   return {
     // Main colors
     brand,

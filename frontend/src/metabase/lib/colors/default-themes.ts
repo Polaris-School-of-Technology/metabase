@@ -6,7 +6,7 @@ import type { MetabaseThemeV2 } from "./types";
  * Default light theme for Metabase.
  * This is the standard theme used throughout the application.
  */
-export const MetabaseLightTheme: MetabaseThemeV2 = {
+export const MetabaseLightTheme = {
   version: 2,
   colors: {
     brand: "hsla(208, 72%, 60%, 1.00)", // Blue 40 - brand color
@@ -34,13 +34,13 @@ export const MetabaseLightTheme: MetabaseThemeV2 = {
     "#98D9D9", // Teal (accent6)
     "#7172AD", // Indigo (accent7)
   ],
-};
+} as const satisfies MetabaseThemeV2;
 
 /**
  * Default dark theme for Metabase.
  * This theme is optimized for low-light environments.
  */
-export const MetabaseDarkTheme: MetabaseThemeV2 = {
+export const MetabaseDarkTheme = {
   version: 2,
   colors: {
     brand: "hsla(208, 72%, 60%, 1.00)", // Blue 40 - brand color (same as light)
@@ -68,4 +68,4 @@ export const MetabaseDarkTheme: MetabaseThemeV2 = {
     "#98D9D9", // Teal (accent6)
     "#7172AD", // Indigo (accent7)
   ],
-};
+} as const satisfies MetabaseThemeV2;

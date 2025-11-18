@@ -1,6 +1,6 @@
 import type { MantineTheme, MantineThemeOverride } from "@mantine/core";
 import { merge } from "icepick";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 import { mutateColors } from "metabase/lib/colors/colors";
 import {
@@ -37,8 +37,7 @@ interface UseDerivedThemeOverrideOptions {
 export function useDerivedMantineTheme(
   options: UseDerivedThemeOverrideOptions,
 ): MantineTheme {
-  const { theme } = options;
-  const [themeCacheBuster, setThemeCacheBuster] = useState(1);
+  const { theme, resolvedColorScheme, themeOverride } = options;
 
   const colorPalette = useMemo(() => {
     if (!theme) {
@@ -64,30 +63,10 @@ export function useDerivedMantineTheme(
   return useMemo(() => {
     const derivedTheme = getThemeOverrides({
       theme,
-      colorScheme: options.resolvedColorScheme,
+      colorScheme: resolvedColorScheme,
     });
 
     // Embedding SDK's legacy theme system generates its own `themeOverride`.
-    const mergedTheme = merge(
-      derivedTheme,
-      options.themeOverride,
-    ) as MantineTheme;
-
-    return {
-      ...mergedTheme,
-      other: {
-        ...mergedTheme.other,
-        colorScheme: options.resolvedColorScheme,
-        updateColorSettings: (newValue: ColorPalette) => {
-          mutateColors(newValue);
-          setThemeCacheBuster(themeCacheBuster + 1);
-        },
-      },
-    };
-  }, [
-    theme,
-    options.themeOverride,
-    options.resolvedColorScheme,
-    themeCacheBuster,
-  ]);
+    return merge(derivedTheme, themeOverride) as MantineTheme;
+  }, [theme, resolvedColorScheme, themeOverride]);
 }

@@ -46,12 +46,6 @@ export interface MetabaseColorsV2 {
 }
 
 /**
- * Input colors for MetabaseThemeV2.
- * All fields are optional to allow partial theme customization.
- */
-export type MetabaseThemeColors = Partial<MetabaseColorsV2>;
-
-/**
  * ColorPalette extends MetabaseColorsV2 with all remaining semantic color keys.
  * This type represents the complete internal color system.
  * All fields are partial to maintain backward compatibility.
@@ -78,7 +72,7 @@ export interface MetabaseThemeV2 {
   version: 2;
 
   /** Color palette - all fields are optional */
-  colors?: MetabaseThemeColors;
+  colors?: Partial<MetabaseColorsV2>;
 
   /** 8 chart colors */
   chartColors?: string[];
