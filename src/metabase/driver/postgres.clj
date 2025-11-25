@@ -155,8 +155,10 @@
 (defmethod driver/connection-properties :postgres
   [_]
   (->>
-   [(assoc driver.common/default-host-details :group-id "host-and-port")
-    (assoc driver.common/default-port-details :placeholder 5432 :group-id "host-and-port")
+   [{:type :group
+     :container-style ["grid" "3fr 1fr"]
+     :fields [driver.common/default-host-details
+              (assoc driver.common/default-port-details :placeholder 5432)]}
     driver.common/default-dbname-details
     driver.common/default-user-details
     (driver.common/auth-provider-options)
@@ -1274,6 +1276,4 @@
                {:name "Render" :pattern "\\.render\\.com$"}
                {:name "Scaleway" :pattern "\\.scw\\.cloud$"}
                {:name "Supabase" :pattern "(pooler\\.supabase\\.com|\\.supabase\\.co)$"}
-               {:name "Timescale" :pattern "(\\.tsdb\\.cloud|\\.timescale\\.com)$"}]
-   :field-groups [{:id "host-and-port"
-                   :container-style "host-and-port-section"}]})
+               {:name "Timescale" :pattern "(\\.tsdb\\.cloud|\\.timescale\\.com)$"}]})
