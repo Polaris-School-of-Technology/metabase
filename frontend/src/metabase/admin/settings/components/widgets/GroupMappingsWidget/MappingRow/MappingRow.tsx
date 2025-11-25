@@ -16,7 +16,7 @@ import { isAdminGroup } from "metabase/lib/groups";
 import { Icon, Tooltip } from "metabase/ui";
 
 import { DeleteGroupMappingModal } from "../DeleteGroupMappingModal/DeleteGroupMappingModal";
-import Selectbox from "../GroupSelect";
+import GroupSelect from "../GroupSelect";
 
 import S from "./MappingRow.module.css";
 
@@ -135,7 +135,7 @@ export const MappingRow = ({
       <tr>
         <td>{name}</td>
         <td>
-          <Selectbox
+          <GroupSelect
             groups={groups}
             selectedGroupIds={selectedGroupIdsFromGroupsThatExist}
             onGroupChange={onChange}
