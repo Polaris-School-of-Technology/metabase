@@ -689,9 +689,8 @@ export const staticVizOverrides = {
 // one-off colors for data layers which are not part of Metabase color palette
 //  we got a blessing from the design team to use these colors 😇
 export const dataLayerColors = {
-  copper: "#B87333",
-  bronze: "#CD7F32",
-  silver: "#C0C0C0",
-  gold: "#FFD700",
+  hidden: "#B87333",
+  internal: "#CD7F32",
+  published: "#FFD700",
   default: "#B87333",
 } as const;
