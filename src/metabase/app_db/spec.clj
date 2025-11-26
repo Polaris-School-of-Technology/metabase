@@ -56,7 +56,11 @@
   (merge
    {:classname   "org.mariadb.jdbc.Driver"
     :subprotocol "mysql"
-    :subname     (make-subname host (or port 3306) db)}
+    :subname     (make-subname host (or port 3306) db)
+    ;; Allow RSA public key retrieval for MySQL 8+ caching_sha2_password authentication.
+    ;; Without this, connections fail when SSL is disabled and MySQL's password cache is empty
+    ;; (e.g., after a MySQL restart). See https://github.com/metabase/metabase/issues/64444
+    :allowPublicKeyRetrieval true}
    (when aws-iam
      (merge
       (make-aws-iam-spec "mysql")

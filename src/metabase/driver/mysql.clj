@@ -638,7 +638,11 @@
    ;; removing that overhead. See also
    ;; https://dev.mysql.com/doc/connector-j/en/connector-j-connp-props-performance-extensions.html#cj-conn-prop_useLocalSessionState
    ;; and #44507
-   :useLocalSessionState true})
+   :useLocalSessionState true
+   ;; Allow RSA public key retrieval for MySQL 8+ caching_sha2_password authentication.
+   ;; Without this, connections fail when SSL is disabled and MySQL's password cache is empty
+   ;; (e.g., after a MySQL restart). See https://github.com/metabase/metabase/issues/64444
+   :allowPublicKeyRetrieval true})
 
 (defn- maybe-add-program-name-option [jdbc-spec additional-options-map]
   ;; connectionAttributes (if multiple) are separated by commas, so values that contain spaces are OK, so long as they
