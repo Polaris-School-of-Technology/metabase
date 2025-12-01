@@ -110,6 +110,9 @@ jobs:
           echo "JDK_JAVA_OPTIONS=$opts" >> GITHUB_ENV
         shell: bash
 
+      - name: Verify env
+        run: echo "JDK_JAVA_OPTIONS=$JDK_JAVA_OPTIONS"
+
       - name: Run Metabase
         run: node e2e/runner/run_cypress_ci.js start
 

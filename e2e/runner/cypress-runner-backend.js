@@ -33,6 +33,8 @@ const CypressBackend = {
         MB_IS_CYPRESS: "true", // custom flag so we can detect we're running in Cypress, used in tests.
       };
 
+      console.log("JVM", process.env.JDK_JAVA_OPTIONS);
+
       this.server.process = spawn("java", ["-jar", jarPath], {
         env: {
           ...process.env,
