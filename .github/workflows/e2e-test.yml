@@ -57,31 +57,31 @@ jobs:
           submodules: true
           token: ${{ secrets.METABASE_AUTOMATION_USER_TOKEN }}
 
-      - name: Setup python-runner
-        if: ${{ inputs.name == 'python' }}
-        env:
-          METABASE_AUTOMATION_USER_TOKEN: ${{ secrets.METABASE_AUTOMATION_USER_TOKEN }}
-        run: ./.github/scripts/setup-python-runner.sh
+      # - name: Setup python-runner
+      #   if: ${{ inputs.name == 'python' }}
+      #   env:
+      #     METABASE_AUTOMATION_USER_TOKEN: ${{ secrets.METABASE_AUTOMATION_USER_TOKEN }}
+      #   run: ./.github/scripts/setup-python-runner.sh
 
-      - name: Prepare Docker containers
-        uses: ./.github/actions/e2e-prepare-containers
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          maildev: true
-          openldap: true
-          webhook: true
-          snowplow: true
-          postgres: true
-          mysql: true
-          mongo: true
+      # - name: Prepare Docker containers
+      #   uses: ./.github/actions/e2e-prepare-containers
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+      #     maildev: true
+      #     openldap: true
+      #     webhook: true
+      #     snowplow: true
+      #     postgres: true
+      #     mysql: true
+      #     mongo: true
 
-      - name: Retrieve uberjar artifact for ${{ inputs.edition }}
-        uses: ./.github/actions/fetch-artifact
-        with:
-          name: metabase-${{ inputs.edition }}-${{ github.event.pull_request.head.sha || github.sha }}-uberjar
-          extract-path: "target/uberjar"
-          output-name: "metabase.jar"
+      # - name: Retrieve uberjar artifact for ${{ inputs.edition }}
+      #   uses: ./.github/actions/fetch-artifact
+      #   with:
+      #     name: metabase-${{ inputs.edition }}-${{ github.event.pull_request.head.sha || github.sha }}-uberjar
+      #     extract-path: "target/uberjar"
+      #     output-name: "metabase.jar"
 
       - name: Prepare front-end environment
         uses: ./.github/actions/prepare-frontend
@@ -92,26 +92,29 @@ jobs:
         id: cypress-prep
         uses: ./.github/actions/prepare-cypress
 
-      - name: Download failed test artifacts
-        uses: actions/download-artifact@v4
-        if: github.run_attempt != '1'
-        continue-on-error: true
-        id: failed-specs
-        with:
-          name: failed-tests-${{ inputs.name }}-${{ inputs.edition }}
+      # - name: Download failed test artifacts
+      #   uses: actions/download-artifact@v4
+      #   if: github.run_attempt != '1'
+      #   continue-on-error: true
+      #   id: failed-specs
+      #   with:
+      #     name: failed-tests-${{ inputs.name }}-${{ inputs.edition }}
 
-      - name: Get failed specs
-        if: github.run_attempt != '1'
-        run: echo "specs=$(cat failed-specs)" >> $GITHUB_ENV
+      # - name: Get failed specs
+      #   if: github.run_attempt != '1'
+      #   run: echo "specs=$(cat failed-specs)" >> $GITHUB_ENV
 
-      - name: Set up E2E JVM options
+      - name: Set E2E JVM options
         run: |
+          echo "PWD: $(pwd)"
+          echo "deps.edn exists: $(test -f deps.edn && echo yes || echo no)"
+          echo "Testing clojure command:"
+          clojure -Sdeps '{:deps {}}' -M -e '(println "hello")'
+          echo "Testing full command:"
+          clojure -Sdeps '{:deps {}}' -M -e '(->> (-> "deps.edn" slurp clojure.edn/read-string :aliases :e2e :jvm-opts) (clojure.string/join " ") println)'
+          echo "With command substitution:"
           opts=$(clojure -Sdeps '{:deps {}}' -M -e '(->> (-> "deps.edn" slurp clojure.edn/read-string :aliases :e2e :jvm-opts) (clojure.string/join " ") println)')
-          echo "JDK_JAVA_OPTIONS=$opts" >> GITHUB_ENV
-        shell: bash
-
-      - name: Verify env
-        run: echo "JDK_JAVA_OPTIONS=$JDK_JAVA_OPTIONS"
+          echo "opts=$opts"
 
       - name: Run Metabase
         run: node e2e/runner/run_cypress_ci.js start
