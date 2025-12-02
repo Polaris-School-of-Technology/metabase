@@ -13,6 +13,8 @@ title: Driver interface changelog
 - All tests in `metabase.query-processor-test.*` namespaces have been moved to `metabase.query-processor.*` (This is
   only relevant if you run individual test namespaces as part of your development workflow).
 
+- Added `metabase.driver/create-index`, `metabase.driver/drop-index!` for automatic indexing of incremental transform filter columns.
+
 ## Metabase 0.57.0
 
 - `driver/field-reference-mlv2` is now deprecated, and is no longer used. Please remove your implementations.
