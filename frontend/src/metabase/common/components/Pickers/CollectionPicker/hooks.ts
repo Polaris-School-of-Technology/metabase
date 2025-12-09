@@ -8,7 +8,7 @@ import {
   useListDatabasesQuery,
 } from "metabase/api";
 import { isRootCollection } from "metabase/collections/utils";
-import { useGetPersonalCollection } from "metabase/common/hooks/use-get-personal-collection/use-get-personal-collection";
+import { useGetPersonalCollection } from "metabase/common/hooks/use-get-personal-collection";
 import { PERSONAL_COLLECTIONS } from "metabase/entities/collections/constants";
 import { useSelector } from "metabase/lib/redux";
 import { PLUGIN_DATA_STUDIO } from "metabase/plugins";
