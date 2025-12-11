@@ -236,7 +236,6 @@ function DataModelContent({ params }: Props) {
 
         {showFieldDetails && (
           <Stack
-            bg="white"
             className={S.column}
             flex={COLUMN_CONFIG.field.flex}
             h="100%"
@@ -277,7 +276,6 @@ function DataModelContent({ params }: Props) {
 
         {showFieldPreview && databaseId != null && fieldId != null && (
           <Box
-            bg="accent-gray-light"
             flex={COLUMN_CONFIG.preview.flex}
             h="100%"
             p="lg"
