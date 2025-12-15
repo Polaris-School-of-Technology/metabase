@@ -1819,3 +1819,16 @@
                                (throw (ex-info (str "Unable to categorize transform with unknown source type: " source-type)
                                                {:transform-id id :source-type source-type})))]
           (t2/update! :transform id {:source_type transform-type})))))
+
+(define-migration BackfillTransformTargetDatabaseId
+  ;; Backfill target_database_id for existing transforms.
+  (let [parse-json (fn [json-str]
+                     (some-> json-str (json-out true)))
+        transforms (t2/query {:select [:id :source :target]
+                              :from   [:transform]
+                              :where  [:= :target_database_id nil]})]
+    (doseq [{:keys [id target]} transforms]
+      (let [parsed-target (parse-json target)
+            db-id         (:database parsed-target)]
+        (when db-id
+          (t2/update! :transform id {:target_database_id db-id}))))))

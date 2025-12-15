@@ -2696,3 +2696,30 @@
           (migrate! :down 56)
           ;; assert pre conditions
           (assert-pre-conditions))))))
+
+(deftest backfill-transform-target-database-id-test
+  (testing "v58.2025-12-15T12:16:16: backfill target_database_id for existing transforms"
+    (impl/test-migrations ["v58.2025-12-15T12:16:16"] [migrate!]
+      (let [user-id (:id (new-instance-with-default :core_user))
+            db1-id  (:id (new-instance-with-default :metabase_database {:name "db1"}))
+            xf-id   (t2/insert-returning-pk!
+                     :transform
+                     {:name        "Query transform"
+                      :source      (json/encode {:type  "query"
+                                                 :query {:database db1-id
+                                                         :type     "native"
+                                                         :native   {:query "SELECT 1"}}})
+                      :source_type "native"
+                      :target      (json/encode {:type     "table"
+                                                 :schema   "public"
+                                                 :name     "output_table"
+                                                 :database db1-id})
+                      :creator_id  user-id
+                      :created_at  :%now
+                      :updated_at  :%now})]
+        (testing "before migration, target_database_id is nil"
+          (is (nil? (:target_database_id (t2/select-one :transform :id xf-id)))))
+        (migrate!)
+        (testing "after migration, target_database_id is populated"
+          (is (= db1-id (:target_database_id (t2/select-one :transform :id xf-id)))
+              "Query transform target_database_id should equal target.database"))))))
