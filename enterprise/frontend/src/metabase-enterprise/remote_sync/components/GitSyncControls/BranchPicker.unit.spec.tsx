@@ -12,6 +12,7 @@ const defaultProps = {
   isLoading: false,
   baseBranch: "main",
   allowCreate: true,
+  fullWidth: false,
 };
 
 const setupEndpoints = () => {
@@ -234,6 +235,22 @@ describe("BranchPicker", () => {
       await waitFor(() => {
         expect(onChange).toHaveBeenCalledWith("new-feature", true);
       });
+    });
+  });
+
+  describe("fullWidth prop", () => {
+    it("should apply flex: 1 to button when fullWidth is true", () => {
+      setup({ fullWidth: true });
+
+      const button = screen.getByTestId("branch-picker-button");
+      expect(button).toHaveStyle({ flex: "1" });
+    });
+
+    it("should not apply flex to button when fullWidth is false", () => {
+      setup({ fullWidth: false });
+
+      const button = screen.getByTestId("branch-picker-button");
+      expect(button).not.toHaveStyle({ flex: "1" });
     });
   });
 });

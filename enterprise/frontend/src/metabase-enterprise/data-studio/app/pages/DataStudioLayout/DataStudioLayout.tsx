@@ -10,6 +10,7 @@ import * as Urls from "metabase/lib/urls";
 import {
   PLUGIN_DEPENDENCIES,
   PLUGIN_FEATURE_LEVEL_PERMISSIONS,
+  PLUGIN_REMOTE_SYNC,
   PLUGIN_TRANSFORMS,
 } from "metabase/plugins";
 import { getLocation } from "metabase/selectors/routing";
@@ -25,6 +26,8 @@ import {
   Tooltip,
   UnstyledButton,
 } from "metabase/ui";
+import { useGetRemoteSyncChangesQuery } from "metabase-enterprise/api";
+import { CollectionSyncStatusBadge } from "metabase-enterprise/remote_sync/components/SyncedCollectionsSidebarSection/CollectionSyncStatusBadge";
 
 import S from "./DataStudioLayout.module.css";
 import { getCurrentTab } from "./utils";
@@ -74,6 +77,14 @@ function DataStudioNav({ isNavbarOpened, onNavbarToggle }: DataStudioNavProps) {
   const canAccessTransforms = useSelector(
     PLUGIN_TRANSFORMS.canAccessTransforms,
   );
+  const isGitSyncVisible = PLUGIN_REMOTE_SYNC.useGitSyncVisible();
+
+  const { data: dirtyData } = useGetRemoteSyncChangesQuery(undefined, {
+    skip: !isGitSyncVisible,
+    refetchOnFocus: true,
+  });
+
+  const hasDirtyChanges = (dirtyData?.dirty?.length ?? 0) > 0;
 
   const currentTab = getCurrentTab(pathname);
 
@@ -90,12 +101,14 @@ function DataStudioNav({ isNavbarOpened, onNavbarToggle }: DataStudioNavProps) {
           isNavbarOpened={isNavbarOpened}
           onNavbarToggle={onNavbarToggle}
         />
+        <PLUGIN_REMOTE_SYNC.GitSyncAppBarControls fullWidth />
         <DataStudioTab
           label={t`Library`}
           icon="repository"
           to={Urls.dataStudioLibrary()}
           isSelected={currentTab === "library"}
           showLabel={isNavbarOpened}
+          rightSection={hasDirtyChanges ? <CollectionSyncStatusBadge /> : null}
         />
 
         {canAccessDataModel && (
@@ -171,6 +184,7 @@ type DataStudioTabProps = {
   to: string;
   isSelected?: boolean;
   showLabel: boolean;
+  rightSection?: ReactNode;
 };
 
 const TOOLTIP_OPEN_DELAY = 1000;
@@ -181,6 +195,7 @@ function DataStudioTab({
   to,
   isSelected,
   showLabel,
+  rightSection,
 }: DataStudioTabProps) {
   return (
     <Tooltip
@@ -199,6 +214,7 @@ function DataStudioTab({
       >
         <FixedSizeIcon name={icon} display="block" className={S.icon} />
         {showLabel && <Text lh="sm">{label}</Text>}
+        {rightSection}
       </Box>
     </Tooltip>
   );

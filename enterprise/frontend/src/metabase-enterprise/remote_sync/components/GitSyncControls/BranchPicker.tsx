@@ -30,6 +30,7 @@ export interface BranchPickerProps {
   isLoading?: boolean;
   baseBranch?: string;
   allowCreate?: boolean;
+  fullWidth?: boolean;
 }
 
 export const BranchPicker = ({
@@ -39,6 +40,7 @@ export const BranchPicker = ({
   isLoading = false,
   baseBranch = "main",
   allowCreate = true,
+  fullWidth = false,
 }: BranchPickerProps) => {
   const [sendToast] = useToast();
   const combobox = useCombobox();
@@ -117,6 +119,8 @@ export const BranchPicker = ({
           py="1rem"
           size="compact-sm"
           variant="default"
+          justify="left"
+          flex={fullWidth ? 1 : undefined}
           disabled={disabled || isLoading || isCreating}
           onClick={() => combobox.toggleDropdown()}
           leftSection={<Icon name="git_branch" c="text-medium" size={14} />}

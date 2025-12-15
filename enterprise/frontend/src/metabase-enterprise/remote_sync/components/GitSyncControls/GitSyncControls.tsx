@@ -23,7 +23,13 @@ import {
 
 import { BranchPicker } from "./BranchPicker";
 
-export const GitSyncControls = () => {
+interface GitSyncControlsProps {
+  fullWidth?: boolean;
+}
+
+export const GitSyncControls = ({
+  fullWidth = false,
+}: GitSyncControlsProps) => {
   const isAdmin = useSelector(getUserIsAdmin);
   const { value: isRemoteSyncEnabled } = useAdminSetting(REMOTE_SYNC_KEY);
   const { value: currentBranch } = useAdminSetting(BRANCH_KEY);
@@ -156,12 +162,18 @@ export const GitSyncControls = () => {
 
   return (
     <>
-      <Button.Group data-testid="git-sync-controls" mr="2rem">
+      <Button.Group
+        data-testid="git-sync-controls"
+        mr={fullWidth ? undefined : "2rem"}
+        maw={fullWidth ? undefined : "13.5rem"}
+        w={fullWidth ? "100%" : undefined}
+      >
         <BranchPicker
           isLoading={isLoading}
           value={currentBranch}
           onChange={handleBranchSelect}
           baseBranch={currentBranch}
+          fullWidth={fullWidth}
         />
 
         <Tooltip label={t`Pull from Git`}>
