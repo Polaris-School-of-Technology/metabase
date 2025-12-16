@@ -233,7 +233,11 @@ function DataModelContent({ params }: Props) {
             header={
               <PaneHeader
                 breadcrumbs={
-                  <Group justify="space-between" w="100%">
+                  <Group
+                    justify="space-between"
+                    w="100%"
+                    data-testid="table-section-header"
+                  >
                     <DataStudioBreadcrumbs>{t`Table details`}</DataStudioBreadcrumbs>
                     <Button
                       component={ForwardRefLink}
@@ -287,7 +291,11 @@ function DataModelContent({ params }: Props) {
             header={
               <PaneHeader
                 breadcrumbs={
-                  <Group justify="space-between" w="100%">
+                  <Group
+                    justify="space-between"
+                    w="100%"
+                    data-testid="field-section-header"
+                  >
                     <DataStudioBreadcrumbs>{t`Field details`}</DataStudioBreadcrumbs>
                     <Button
                       component={ForwardRefLink}

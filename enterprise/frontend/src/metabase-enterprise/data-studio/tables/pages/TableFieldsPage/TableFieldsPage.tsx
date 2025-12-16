@@ -104,7 +104,12 @@ export function TableFieldsPage({ params }: TableFieldsPageProps) {
             px="lg"
             gap="0"
           >
-            <Group justify="space-between" pt="lg" pb="md">
+            <Group
+              justify="space-between"
+              pt="lg"
+              pb="md"
+              data-testid="field-section-header"
+            >
               <Text fw="bold">{t`Field Details`}</Text>
               <Button
                 component={ForwardRefLink}
