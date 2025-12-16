@@ -473,7 +473,7 @@
   (let [driver      driver/*driver*
         suffix      (str (System/currentTimeMillis))
         table-name  (str "test_table_" suffix)
-        qualified-table-name (if schema (str schema "." table-name) table-name)
+        qualified-table-name (keyword schema table-name)
         index-name  #(str "test_index_" % "_" suffix)
         database-id (mt/id)
         cleanup     (fn []
@@ -484,26 +484,27 @@
                           (throw t))))]
     (when schema
       (driver/create-schema-if-needed! driver (driver/connection-spec driver database-id) schema))
-    (testing "throws a driver-specific exception if the table does not exist"
+    (testing "Throws a driver-specific exception if the table does not exist"
       (is (thrown? Throwable (driver/create-index! driver database-id schema table-name (index-name "a") [:a]))))
     (try
       (driver/create-table! driver database-id qualified-table-name {:a [:int], :b [:int], :c [:int]})
-      (testing "single part index"
-        (testing "nil return"                               ; give room for return to acquire meaning later if needed without breakage
+      (testing "Create a single column index"
+        (testing "Returns nil"                               ; give room for return to acquire meaning later if needed without breakage
           (is (nil? (driver/create-index! driver database-id schema table-name (index-name "a") [:a]))))
-        (testing "created"
+        (testing "Index now exists"
           (is (= #{{:type       :normal-column-index
                     :index-name (index-name "a")
                     :value      "a"}}
                  (driver/describe-table-indexes driver database-id {:schema schema :name table-name}))))
-        (testing "drop it"
-          (testing "nil return"
-            (is (nil? (driver/drop-index! driver database-id schema (index-name "a")))))
-          (testing "dropped"
+        (testing "Drop the index"
+          (testing "Returns nil"
+            (is (nil? (driver/drop-index! driver database-id schema table-name (index-name "a")))))
+          (testing "Index no longer exists"
             (is (empty? (driver/describe-table-indexes driver database-id {:schema schema :name table-name}))))))
-      (testing "multi column index"
+      (testing "Create a multi column index"
         (driver/create-index! driver database-id schema table-name (index-name "b_c") [:b :c])
-        (testing "created (leading column only due to describe-table-indexes ignoring subsequent parts"
+        (testing "Index now exists"
+          ;; single-part only as non-leading columns currently dropped by describe-table-indexes
           (is (= #{{:type       :normal-column-index
                     :index-name (index-name "b_c")
                     :value      "b"}}

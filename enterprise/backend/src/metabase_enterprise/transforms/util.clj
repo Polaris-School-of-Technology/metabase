@@ -546,12 +546,10 @@
           :database      database
           :target        target
           :indexes       indexes})]
-    (def drop* drop)
-    (def create* create)
     (doseq [{:keys [index-name value]} drop]
       (transforms.instrumentation/with-stage-timing [run-id [:import :drop-incremental-filter-index]]
         (log/infof "Dropping secondary index %s(%s) for target %s" index-name value (pr-str target))
-        (driver/drop-index! driver (:id database) (:schema target) index-name)))
+        (driver/drop-index! driver (:id database) (:schema target) (:name target) index-name)))
     (doseq [{:keys [index-name value]} create]
       (transforms.instrumentation/with-stage-timing [run-id [:import :create-incremental-filter-index]]
         (log/infof "Creating secondary index %s(%s) for target %s" index-name value (pr-str target))

@@ -1154,6 +1154,10 @@
   ;; ok to hardcode driver name here because this function only supports app DB types
   (driver-api/query-canceled-exception? :mysql e))
 
+(defmethod sql-jdbc/drop-index-sql :mysql [_ _schema table-name index-name]
+  (let [{quote-identifier :quote} (sql/get-dialect :mysql)]
+    (format "DROP INDEX %s ON %s" (quote-identifier (name index-name)) (quote-identifier (name table-name)))))
+
 ;;; ------------------------------------------------- User Impersonation --------------------------------------------------
 
 (defmethod driver.sql/default-database-role :mysql

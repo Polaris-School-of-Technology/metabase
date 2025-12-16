@@ -72,6 +72,7 @@
            (transforms.util/run-cancelable-transform!
             run-id driver transform-details
             (fn [_cancel-chan] (driver/run-transform! driver transform-details opts))))
+         (transforms.util/execute-secondary-index-ddl-if-required! transform run-id database target)
          (transforms.instrumentation/with-stage-timing [run-id [:import :table-sync]]
            (transforms.util/sync-target! target database)
          ;; This event must be published only after the sync is complete - the new table needs to be in AppDB.
