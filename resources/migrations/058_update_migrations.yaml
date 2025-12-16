@@ -1196,6 +1196,13 @@ databaseChangeLog:
       id: v58.2025-12-10T16:00:00
       author: noahmoss
       comment: Create metabot_use_case table
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            changeSetExecuted:
+              id: v57.2025-12-16T20:31:00
+              author: noahmoss
+              changeLogFile: migrations/057_update_migrations.yaml
       changes:
         - createTable:
             tableName: metabot_use_case
@@ -1262,6 +1269,13 @@ databaseChangeLog:
       id: v58.2025-12-10T16:01:00
       author: noahmoss
       comment: Add index on metabot_use_case.metabot_id
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            changeSetExecuted:
+              id: v57.2025-12-16T20:31:01
+              author: noahmoss
+              changeLogFile: migrations/057_update_migrations.yaml
       changes:
         - createIndex:
             tableName: metabot_use_case
@@ -1278,6 +1292,13 @@ databaseChangeLog:
       id: v58.2025-12-10T16:02:00
       author: noahmoss
       comment: Add unique constraint on metabot_use_case (metabot_id, name)
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            changeSetExecuted:
+              id: v57.2025-12-16T20:31:02
+              author: noahmoss
+              changeLogFile: migrations/057_update_migrations.yaml
       changes:
         - addUniqueConstraint:
             tableName: metabot_use_case
@@ -1292,6 +1313,13 @@ databaseChangeLog:
       id: v58.2025-12-10T16:03:00
       author: noahmoss
       comment: Add unique constraint on metabot_use_case.entity_id
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            changeSetExecuted:
+              id: v57.2025-12-16T20:31:03
+              author: noahmoss
+              changeLogFile: migrations/057_update_migrations.yaml
       changes:
         - addUniqueConstraint:
             tableName: metabot_use_case
@@ -1306,6 +1334,13 @@ databaseChangeLog:
       id: v58.2025-12-10T16:04:00
       author: noahmoss
       comment: Add foreign key constraint on metabot_use_case.metabot_id
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            changeSetExecuted:
+              id: v57.2025-12-16T20:31:04
+              author: noahmoss
+              changeLogFile: migrations/057_update_migrations.yaml
       changes:
         - addForeignKeyConstraint:
             baseTableName: metabot_use_case
@@ -1325,11 +1360,17 @@ databaseChangeLog:
       comment: Create default use cases for internal metabot
       preConditions:
         - onFail: MARK_RAN
-        - sqlCheck:
-            expectedResult: 0
-            sql: >-
-              SELECT COUNT(*) FROM metabot_use_case
-              WHERE metabot_id = (SELECT id FROM metabot WHERE entity_id = 'metabotmetabotmetabot');
+        - and:
+            - not:
+                changeSetExecuted:
+                  id: v57.2025-12-16T20:31:05
+                  author: noahmoss
+                  changeLogFile: migrations/057_update_migrations.yaml
+            - sqlCheck:
+                expectedResult: 0
+                sql: >-
+                  SELECT COUNT(*) FROM metabot_use_case
+                  WHERE metabot_id = (SELECT id FROM metabot WHERE entity_id = 'metabotmetabotmetabot');
       changes:
         - sql:
             sql: >-
@@ -1351,11 +1392,17 @@ databaseChangeLog:
       comment: Create default use cases for embedded metabot
       preConditions:
         - onFail: MARK_RAN
-        - sqlCheck:
-            expectedResult: 0
-            sql: >-
-              SELECT COUNT(*) FROM metabot_use_case
-              WHERE metabot_id = (SELECT id FROM metabot WHERE entity_id = 'embeddedmetabotmetabo');
+        - and:
+            - not:
+                changeSetExecuted:
+                  id: v57.2025-12-16T20:31:06
+                  author: noahmoss
+                  changeLogFile: migrations/057_update_migrations.yaml
+            - sqlCheck:
+                expectedResult: 0
+                sql: >-
+                  SELECT COUNT(*) FROM metabot_use_case
+                  WHERE metabot_id = (SELECT id FROM metabot WHERE entity_id = 'embeddedmetabotmetabo');
       changes:
         - sql:
             sql: >-
@@ -1372,6 +1419,13 @@ databaseChangeLog:
       id: v58.2025-12-10T16:07:00
       author: noahmoss
       comment: Add use_case column to metabot_message
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            changeSetExecuted:
+              id: v57.2025-12-16T20:31:07
+              author: noahmoss
+              changeLogFile: migrations/057_update_migrations.yaml
       changes:
         - addColumn:
             tableName: metabot_message
@@ -1387,6 +1441,13 @@ databaseChangeLog:
       id: v58.2025-12-10T16:08:00
       author: noahmoss
       comment: Make profile_id nullable on metabot_message
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            changeSetExecuted:
+              id: v57.2025-12-16T20:31:08
+              author: noahmoss
+              changeLogFile: migrations/057_update_migrations.yaml
       changes:
         - dropNotNullConstraint:
             tableName: metabot_message
