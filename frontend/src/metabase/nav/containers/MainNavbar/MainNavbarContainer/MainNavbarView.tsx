@@ -211,7 +211,7 @@ export function MainNavbarView({
             </SidebarSection>
           )}
 
-          <PLUGIN_TENANTS.MainNavSharedCollections />
+          <PLUGIN_TENANTS.MainNavExternalCollections />
 
           {PLUGIN_DATA_STUDIO.isEnabled && (
             <PLUGIN_DATA_STUDIO.NavbarLibrarySection

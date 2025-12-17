@@ -7,7 +7,7 @@ import type { Collection } from "metabase-types/api";
 import { createMockCollection, createMockUser } from "metabase-types/api/mocks";
 import { createMockState } from "metabase-types/store/mocks";
 
-import { MainNavSharedCollections } from "./MainNavSharedCollections";
+import { MainNavExternalCollections } from "./MainNavExternalCollections";
 
 const MOCK_TENANT_COLLECTIONS = [
   createMockCollection({
@@ -40,12 +40,12 @@ const setup = ({
     }),
   });
 
-  renderWithProviders(<MainNavSharedCollections />, {
+  renderWithProviders(<MainNavExternalCollections />, {
     storeInitialState: createMockState({ settings, currentUser }),
   });
 };
 
-describe("MainNavSharedCollections > create shared tenant collection button", () => {
+describe("MainNavExternalCollections > create shared tenant collection button", () => {
   it("shows the create button if the user can write to root collection", async () => {
     setup({ canWriteToSharedCollectionRoot: true });
     await screen.findByText("External collections");
@@ -63,7 +63,7 @@ describe("MainNavSharedCollections > create shared tenant collection button", ()
   });
 });
 
-describe("MainNavSharedCollections > section visibility", () => {
+describe("MainNavExternalCollections > section visibility", () => {
   it("shows the section if they can write to root collection", async () => {
     setup({ canWriteToSharedCollectionRoot: true, tenantCollections: [] });
 
@@ -112,7 +112,7 @@ describe("MainNavSharedCollections > section visibility", () => {
       return 404;
     });
 
-    renderWithProviders(<MainNavSharedCollections />, {
+    renderWithProviders(<MainNavExternalCollections />, {
       storeInitialState: createMockState({ settings, currentUser }),
     });
 

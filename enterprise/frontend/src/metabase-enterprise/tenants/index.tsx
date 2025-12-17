@@ -27,7 +27,7 @@ import { EditUserStrategySettingsButton } from "./EditUserStrategySettingsButton
 import { ExternalGroupDetailApp } from "./components/ExternalGroupDetailApp/ExternalGroupDetailApp";
 import { ExternalGroupsListingApp } from "./components/ExternalGroupsListingApp/ExternalGroupsListingApp";
 import { ExternalPeopleListingApp } from "./components/ExternalPeopleListingApp/ExternalPeopleListingApp";
-import { MainNavSharedCollections } from "./components/MainNavSharedCollections";
+import { MainNavExternalCollections } from "./components/MainNavExternalCollections";
 import { ReactivateExternalUserButton } from "./components/ReactivateExternalUserButton";
 import { TenantCollectionItemList } from "./components/TenantCollectionItemList";
 import { TenantCollectionList } from "./components/TenantCollectionList";
@@ -213,7 +213,7 @@ export function initializePlugin() {
     PLUGIN_TENANTS.isTenantCollection = isTenantCollection;
     PLUGIN_TENANTS.ReactivateExternalUserButton = ReactivateExternalUserButton;
     PLUGIN_TENANTS.TenantGroupHintIcon = TenantGroupHintIcon;
-    PLUGIN_TENANTS.MainNavSharedCollections = MainNavSharedCollections;
+    PLUGIN_TENANTS.MainNavExternalCollections = MainNavExternalCollections;
     PLUGIN_TENANTS.TenantCollectionItemList = TenantCollectionItemList;
     PLUGIN_TENANTS.TenantSpecificCollectionsItemList =
       TenantSpecificCollectionsItemList;

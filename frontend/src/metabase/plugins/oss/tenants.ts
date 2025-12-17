@@ -36,7 +36,7 @@ const getDefaultPluginTenants = () => ({
   ReactivateExternalUserButton: ({ user: _user }: { user: User }) =>
     null as React.ReactElement | null,
   TenantGroupHintIcon: PluginPlaceholder,
-  MainNavSharedCollections: PluginPlaceholder,
+  MainNavExternalCollections: PluginPlaceholder,
   TenantCollectionItemList: (_props: CollectionItemListProps) =>
     null as React.ReactElement | null,
   TenantSpecificCollectionsItemList: (_props: CollectionItemListProps) =>
@@ -80,7 +80,7 @@ export const PLUGIN_TENANTS: {
     user: User;
   }) => React.ReactElement | null;
   TenantGroupHintIcon: React.ComponentType;
-  MainNavSharedCollections: React.ComponentType;
+  MainNavExternalCollections: React.ComponentType;
   TenantCollectionItemList: (
     props: CollectionItemListProps,
   ) => React.ReactElement | null;

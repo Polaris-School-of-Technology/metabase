@@ -25,7 +25,7 @@ import { ActionIcon, Flex, Icon, Modal, Tooltip } from "metabase/ui";
 import { useGetRemoteSyncChangesQuery } from "metabase-enterprise/api";
 import { CollectionSyncStatusBadge } from "metabase-enterprise/remote_sync/components/SyncedCollectionsSidebarSection/CollectionSyncStatusBadge";
 
-export const MainNavSharedCollections = () => {
+export const MainNavExternalCollections = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const isTenantsEnabled = useSetting("use-tenants");
   const isAdmin = useSelector(getUserIsAdmin);
