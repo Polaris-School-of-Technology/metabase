@@ -66,7 +66,7 @@ export const MainNavExternalCollections = () => {
   const [createCollection] = useCreateCollectionMutation();
 
   const tenantCollectionTree = useMemo(
-    () => buildCollectionTree(tenantCollections),
+    () => buildCollectionTree(tenantCollections, {}),
     [tenantCollections],
   );
 
