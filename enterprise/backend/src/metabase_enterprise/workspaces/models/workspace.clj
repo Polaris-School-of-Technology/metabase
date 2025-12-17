@@ -8,7 +8,7 @@
    [toucan2.core :as t2]))
 
 (def ^:private type->grouping "How models are grouped in lists"
-  ;; do not forget to update `entities` if you add stuff here
+  ;; do not forget to update `entities` if you add  stuff here
   {:transform :transforms})
 
 (methodical/defmethod t2/table-name :model/Workspace [_model] :workspace)
